@@ -1,0 +1,226 @@
+[
+    {
+        "id": "f23255c3.54aef8",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "aa89b010.f9c09",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Home",
+        "icon": "dashboard",
+        "order": "1"
+    },
+    {
+        "id": "a9fcb3c1.bc81b",
+        "type": "ibmiot in",
+        "z": "f23255c3.54aef8",
+        "authentication": "boundService",
+        "apiKey": "",
+        "inputType": "evt",
+        "logicalInterface": "",
+        "ruleId": "",
+        "deviceId": "",
+        "applicationId": "",
+        "deviceType": "+",
+        "eventType": "+",
+        "commandType": "",
+        "format": "json",
+        "name": "IBM IoT",
+        "service": "registered",
+        "allDevices": "",
+        "allApplications": "",
+        "allDeviceTypes": true,
+        "allLogicalInterfaces": "",
+        "allEvents": true,
+        "allCommands": "",
+        "allFormats": "",
+        "qos": 0,
+        "x": 70,
+        "y": 240,
+        "wires": [
+            [
+                "2def40aa.d3beb",
+                "68899d5b.513a04",
+                "2699a1f6.44218e",
+                "fb84bda4.04c4"
+            ]
+        ]
+    },
+    {
+        "id": "15b8260f.5d0a0a",
+        "type": "debug",
+        "z": "f23255c3.54aef8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 490,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "fb84bda4.04c4",
+        "type": "function",
+        "z": "f23255c3.54aef8",
+        "name": "timestamp",
+        "func": "var getTimestamp = function () {\n    var date = new Date();\n    date.setHours(date.getHours() + 7);\n    var ts = date.getFullYear() + '-';\n    ts += (\"0\"+(date.getMonth()+1)).slice(-2) + '-';\n    ts += (\"0\"+date.getDate()).slice(-2) + '_';\n    ts += (\"0\"+date.getHours()).slice(-2) + ':';\n    ts += (\"0\"+date.getMinutes()).slice(-2) + ':';\n    ts += (\"0\"+date.getSeconds()).slice(-2);\n    return ts;\n}\n\nmsg.payload = {\n    \"timestamp \" : getTimestamp(),\n    \"\\nNotice \" : msg.payload.kelompok7.Name,\n    \"\\nsuhu \" : msg.payload.kelompok7.Temperature,\n    \"\\nkelembaban \" : msg.payload.kelompok7.Humidity,\n    \"\\njarak \" : msg.payload.kelompok7.Jarak,\n};\n\nmsg.payload.toString(\"utf8\");    \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 270,
+        "y": 80,
+        "wires": [
+            [
+                "15b8260f.5d0a0a"
+            ]
+        ]
+    },
+    {
+        "id": "2def40aa.d3beb",
+        "type": "function",
+        "z": "f23255c3.54aef8",
+        "name": "suhu",
+        "func": "value = msg.payload.kelompok7.Temperature;\nflow.set('suhu',value);\nreturn { payload : value} ;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 270,
+        "y": 180,
+        "wires": [
+            [
+                "7cde93d2.2266dc",
+                "45b407cf.306b98"
+            ]
+        ]
+    },
+    {
+        "id": "68899d5b.513a04",
+        "type": "function",
+        "z": "f23255c3.54aef8",
+        "name": "kelembaban",
+        "func": "value = msg.payload.kelompok7.Humidity;\nflow.set('kelembaban',value);\nreturn { payload : value} ;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 270,
+        "y": 300,
+        "wires": [
+            [
+                "18f2dfe.b5db92",
+                "e7b9e0f3.f390a"
+            ]
+        ]
+    },
+    {
+        "id": "2699a1f6.44218e",
+        "type": "function",
+        "z": "f23255c3.54aef8",
+        "name": "jarak",
+        "func": "value = msg.payload.kelompok7.Jarak;\nflow.set('jarak',value);\nreturn { payload : value} ;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 270,
+        "y": 420,
+        "wires": [
+            [
+                "34d4082a.9f9cd8",
+                "6c045f0e.0f6ed"
+            ]
+        ]
+    },
+    {
+        "id": "7cde93d2.2266dc",
+        "type": "ui_gauge",
+        "z": "f23255c3.54aef8",
+        "tab": "aa89b010.f9c09",
+        "name": "Temperature",
+        "group": "Suhu",
+        "order": "1",
+        "format": "{{Temperature}}",
+        "min": 0,
+        "max": "40",
+        "x": 490,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "18f2dfe.b5db92",
+        "type": "ui_chart",
+        "z": "f23255c3.54aef8",
+        "tab": "aa89b010.f9c09",
+        "name": "Humadity",
+        "group": "Kelembaban",
+        "order": "1",
+        "interpolate": "step-after",
+        "nodata": "No Data",
+        "removeOlder": "2",
+        "removeOlderUnit": "60",
+        "x": 480,
+        "y": 280,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "34d4082a.9f9cd8",
+        "type": "ui_chart",
+        "z": "f23255c3.54aef8",
+        "tab": "aa89b010.f9c09",
+        "name": "Distance",
+        "group": "Jarak",
+        "order": "1",
+        "interpolate": "basis",
+        "nodata": "No Data",
+        "removeOlder": "1",
+        "removeOlderUnit": "60",
+        "x": 480,
+        "y": 400,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "45b407cf.306b98",
+        "type": "ui_text",
+        "z": "f23255c3.54aef8",
+        "tab": "aa89b010.f9c09",
+        "name": "",
+        "group": "Suhu",
+        "order": 1,
+        "format": "Suhu : {{msg.payload}} C",
+        "x": 470,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "e7b9e0f3.f390a",
+        "type": "ui_text",
+        "z": "f23255c3.54aef8",
+        "tab": "aa89b010.f9c09",
+        "name": "",
+        "group": "Kelembaban",
+        "order": 1,
+        "format": "Kelembaban : {{msg.payload}} %",
+        "x": 470,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "6c045f0e.0f6ed",
+        "type": "ui_text",
+        "z": "f23255c3.54aef8",
+        "tab": "aa89b010.f9c09",
+        "name": "",
+        "group": "Jarak",
+        "order": 1,
+        "format": "Jarak : {{msg.payload}} cm",
+        "x": 470,
+        "y": 440,
+        "wires": []
+    }
+]
