@@ -7,8 +7,8 @@ int trig = D2;
 int echo = D3;
 int durasi, jarak;
 //-------- Customise these values -----------
-const char* ssid = "Viona";
-const char* password = "namakuaja";
+const char* ssid = "[SSID_NAME]";
+const char* password = "[SSID_PASSWORD]";
 
 
 #define ORG "6hwdst"
